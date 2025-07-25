@@ -38,11 +38,7 @@ HOMEWORK_VERDICTS = {
 
 def check_tokens():
     """Проверяет наличие всех обязательных токенов."""
-    if (
-        PRACTICUM_TOKEN is None or
-        TELEGRAM_TOKEN is None or
-        TELEGRAM_CHAT_ID is None
-    ):
+    if PRACTICUM_TOKEN is None or TELEGRAM_TOKEN is None or TELEGRAM_CHAT_ID is None:
         return False
     return True
 
