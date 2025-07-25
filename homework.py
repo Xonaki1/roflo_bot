@@ -38,13 +38,8 @@ HOMEWORK_VERDICTS = {
 
 def check_tokens():
     """Проверяет наличие всех обязательных токенов."""
-    if (
-        PRACTICUM_TOKEN is None or
-        TELEGRAM_TOKEN is None or
-        TELEGRAM_CHAT_ID is None
-    ):
-        return False
-    return True
+    tokens = [PRACTICUM_TOKEN, TELEGRAM_TOKEN, TELEGRAM_CHAT_ID]
+    return all(tokens)
 
 
 def send_message(bot, message):
