@@ -10,7 +10,7 @@ import telebot
 load_dotenv()
 
 log_file = 'bot.log'
-max_bytes = 5 * 1024 * 1024 
+max_bytes = 5 * 1024 * 1024
 backup_count = 5
 
 file_handler = RotatingFileHandler(
@@ -49,7 +49,10 @@ def ask_neuro(prompt):
     }
     data = {
         "model": MODEL,
-        "messages": [{"role": "user", "content": prompt}],
+        "messages": [
+            {"role": "system", "content": "Отвечай всегда на русском языке."},
+            {"role": "user", "content": prompt}
+        ],
         "stream": True
     }
     try:
@@ -73,16 +76,12 @@ def ask_neuro(prompt):
                 try:
                     chunk_json = json.loads(chunk_str)
                     if "choices" in chunk_json:
-                        content = chunk_json["choices"][0]["delta"].get(
-                            "content", ""
-                        )
+                        content = chunk_json["choices"][0]["delta"].get("content", "")
                         if content:
                             cleaned = process_content(content)
                             full_response.append(cleaned)
                 except Exception as e:
-                    logging.debug(
-                        f"Ошибка парсинга чанка: {e} | chunk: {chunk_str}"
-                    )
+                    logging.debug(f"Ошибка парсинга чанка: {e} | chunk: {chunk_str}")
                     pass
             return ''.join(full_response)
     except requests.exceptions.Timeout:
@@ -91,6 +90,17 @@ def ask_neuro(prompt):
     except Exception as e:
         logging.error(f"Ошибка при запросе к API: {e}")
         return "Ошибка при запросе к API. Попробуйте позже."
+
+
+@bot.message_handler(commands=['start'])
+def handle_start(message):
+    """Приветствует пользователя при команде /start."""
+    welcome_text = (
+        "Привет, я бот - нейросеть.\n"
+        "Напиши мне что-нибудь, и я отвечу, наверное.\n"
+        "А может и нет, хз."
+    )
+    bot.send_message(message.chat.id, welcome_text)
 
 
 @bot.message_handler(content_types=['text'])
@@ -111,17 +121,6 @@ def handle_message(message):
     if not response:
         response = "Извините, не удалось получить ответ от нейросети."
     bot.send_message(message.chat.id, response)
-
-
-@bot.message_handler(commands=['start'])
-def handle_start(message):
-    """Приветствует пользователя при команде /start."""
-    welcome_text = (
-        "Привет, я бот - нейросеть.\n"
-        "Напиши мне что-нибудь, и я отвечу, наверное.\n"
-        "А может и нет, хз."
-    )
-    bot.send_message(message.chat.id, welcome_text)
 
 
 def main():
