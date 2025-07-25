@@ -10,7 +10,7 @@ import telebot
 load_dotenv()
 
 log_file = 'bot.log'
-max_bytes = 5 * 1024 * 1024  # 5 МБ
+max_bytes = 5 * 1024 * 1024 
 backup_count = 5
 
 file_handler = RotatingFileHandler(
@@ -97,6 +97,15 @@ def ask_neuro(prompt):
 def handle_message(message):
     """Обрабатывает входящее текстовое сообщение от пользователя Telegram."""
     user_text = message.text
+    if user_text.strip().lower() == 'дурила':
+        bot.send_message(message.chat.id, 'Сам ты дурила')
+        return
+    if user_text.strip().lower() == 'юна':
+        bot.send_message(
+            message.chat.id,
+            'О Юна - повелитель нейросетей, приветствую тебя!'
+        )
+        return
     bot.send_chat_action(message.chat.id, 'typing')
     response = ask_neuro(user_text)
     if not response:
@@ -108,8 +117,9 @@ def handle_message(message):
 def handle_start(message):
     """Приветствует пользователя при команде /start."""
     welcome_text = (
-        "Привет! Я бот - нейросеть.\n"
-        "Напиши мне что-нибудь, и я отвечу!"
+        "Привет, я бот - нейросеть.\n"
+        "Напиши мне что-нибудь, и я отвечу, наверное.\n"
+        "А может и нет, хз."
     )
     bot.send_message(message.chat.id, welcome_text)
 
