@@ -20,19 +20,18 @@
 ## Установка и запуск
 
 1. Клонировать репозиторий:
-   ```bash
-   git clone https://github.com/username/repo.git
-   cd repo
+- git clone https://github.com/username/repo.git
+- cd repo
 
 2. Установить зависимости:
-   pip install -r requirements.txt
+- pip install -r requirements.txt
 
 3. Создать файл .env и добавить в него токены:
 
-  TELEGRAM_TOKEN=ваш_токен_бота
-  GOOGLE_API=ваш_api_ключ
+- TELEGRAM_TOKEN=ваш_токен_бота
+- GOOGLE_API=ваш_api_ключ
 
 4. Запустить бота:
-  python3 bot.py
+- python3 bot.py
 
 
