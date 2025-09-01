@@ -1,2 +1,2 @@
-# homework_bot
+# Простой телегам бот с подключеннной к нему нейросетью
 python telegram bot
